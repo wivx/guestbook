@@ -16,6 +16,11 @@
       padding: .5em;
       background: #ccc;
     }
+
+    #newPostMessage {
+      color: blue;
+    }
+
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -43,6 +48,7 @@ $(document).ready(function(){
 
   // 按 [新增留言] 按鈕之後的行為
   $("button#new").click(function(){
+    $("#newPostMessage").html('');
     // 讀取畫面上使用者輸入的欄位資料
     let text = $("#message").val();
     let filename = $("#filename").val();
@@ -51,6 +57,10 @@ $(document).ready(function(){
     // 呼叫新增留言 API
     $.get("post.php", postData, function(responseData){
       $("#newResult").html(JSON.stringify(responseData));
+      $("#newPostMessage").html('新增留言成功');
+    }).fail(function(errorResponse) {
+      $("#newResult").html(JSON.stringify(errorResponse.responseJSON));
+      $("#newPostMessage").html('新增留言失敗 請確認輸入之留言或檔名正確');
     });
   });
 
@@ -83,6 +93,7 @@ $(document).ready(function(){
     </tr>
 </table>
 <button id="new">新增留言</button>
+<div id="newPostMessage"></div>
 
 <p>新增留言 API 回傳結果 /post.php </p>
 <div id="newResult"></div>
